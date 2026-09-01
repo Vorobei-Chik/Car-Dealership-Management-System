@@ -164,3 +164,40 @@
 ├── gradlew.bat
 ├── settings.gradle
 └── .env.example
+
+## Запуск проекта
+
+### Требования
+- Java 21
+- Docker и Docker Compose
+
+### Шаги для запуска
+
+1. **Клонируйте репозиторий**
+```bash
+git clone https://github.com/your-username/car-dealership.git
+cd car-dealership
+```
+
+2. **Запустите все сервисы через Docker Compose**
+
+```bash
+docker-compose up -d
+```
+
+4. Проверьте работу сервисов
+
+- OrderService: `http://localhost:8081/swagger-ui.html`
+- StorageService: `http://localhost:8082/swagger-ui.html`
+- Keycloak: `http://localhost:8080`
+- Prometheus: `http://localhost:9091`
+- Grafana: `http://localhost:3000`
+
+### Документация API
+Swagger UI доступен после запуска сервисов:
+
+- OrderService: `/swagger-ui.html`
+
+- StorageService: `/swagger-ui.html`
+
+Документация генерируется автоматически через SpringDoc OpenAPI.
