@@ -90,6 +90,7 @@
 ---
 
 ## Структура проекта
+```
 ├── common/ # Общие компоненты для всех сервисов
 │ └── src/main/java/study/project/dealership/common/
 │ ├── messaging/ # Общие классы для работы с брокерами
@@ -161,6 +162,7 @@
 ├── gradlew.bat
 ├── settings.gradle
 └── .env.example
+```
 
 ## Запуск проекта
 
