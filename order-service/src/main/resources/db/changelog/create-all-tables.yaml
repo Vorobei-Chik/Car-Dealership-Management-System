@@ -1,0 +1,544 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: student
+      changes:
+        - createTable:
+            tableName: car_models
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: body_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: money
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: parts
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: part_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: money
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: engines
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_engine_part
+                    references: parts(id)
+              - column:
+                  name: fuel_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: power
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: capacity
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: gear_boxes
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_gearbox_part
+                    references: parts(id)
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: transmissions
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_transmission_part
+                    references: parts(id)
+              - column:
+                  name: vehicle_drive_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: wheels
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_wheel_part
+                    references: parts(id)
+
+        - createTable:
+            tableName: interiors
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_interior_part
+                    references: parts(id)
+
+        - createTable:
+            tableName: rudders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_rudder_part
+                    references: parts(id)
+
+        - createTable:
+            tableName: part_compatibilities
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_compat_model
+                    references: car_models(id)
+              - column:
+                  name: part_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_compat_part
+                    references: parts(id)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: cars
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_models
+                    references: car_models(id)
+              - column:
+                  name: engine_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_engine
+                    references: engines(id)
+              - column:
+                  name: gearbox_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_gearbox
+                    references: gear_boxes(id)
+              - column:
+                  name: transmission_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_transmission
+                    references: transmissions(id)
+              - column:
+                  name: wheel_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_wheel
+                    references: wheels(id)
+              - column:
+                  name: interior_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_interior
+                    references: interiors(id)
+              - column:
+                  name: rudder_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_rudder
+                    references: rudders(id)
+              - column:
+                  name: color
+                  type: VARCHAR(7)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: money
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: test_drive_available
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ordered
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: configurations
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_config_model
+                    references: car_models(id)
+              - column:
+                  name: engine_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_config_engine
+                    references: engines(id)
+              - column:
+                  name: gearbox_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_config_gearbox
+                    references: gear_boxes(id)
+              - column:
+                  name: transmission_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_config_transmission
+                    references: transmissions(id)
+              - column:
+                  name: wheel_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_config_wheel
+                    references: wheels(id)
+              - column:
+                  name: interior_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_config_interior
+                    references: interiors(id)
+              - column:
+                  name: rudder_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_config_rudder
+                    references: rudders(id)
+              - column:
+                  name: color
+                  type: VARCHAR(7)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_standard
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manager_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: configuration_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_order_config
+                    references: configurations(id)
+              - column:
+                  name: car_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_order_car
+                    references: cars(id)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: requests
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_request_car
+                    references: cars(id)
+              - column:
+                  name: date
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createIndex:
+            tableName: part_compatibilities
+            indexName: idx_compatibility_model
+            columns:
+              - column:
+                  name: model_id
+        - createIndex:
+            tableName: part_compatibilities
+            indexName: idx_compatibility_part
+            columns:
+              - column:
+                  name: part_id
+        - createIndex:
+            tableName: cars
+            indexName: idx_car_model
+            columns:
+              - column:
+                  name: model_id
+        - createIndex:
+            tableName: orders
+            indexName: idx_order_client
+            columns:
+              - column:
+                  name: client_id
+        - createIndex:
+            tableName: orders
+            indexName: idx_order_manager
+            columns:
+              - column:
+                  name: manager_id
+        - createIndex:
+            tableName: requests
+            indexName: idx_request_client
+            columns:
+              - column:
+                  name: client_id
+        - createIndex:
+            tableName: requests
+            indexName: idx_request_car
+            columns:
+              - column:
+                  name: car_id

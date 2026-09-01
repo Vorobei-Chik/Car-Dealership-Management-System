@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    active: integration-test
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  application:
+    name: storage-service
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+    listener:
+      missing-topics-fatal: false
+
+keycloak:
+  realm: test
+  auth-server-url: http://localhost:8080
+  resource: dealership-app
+  credentials:
+    secret: test-secret
+
+swagger:
+  oauth2:
+    client-id: dealership-swagger
+    auth-server-url: http://localhost:8080
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    oauth:
+      client-id: ${swagger.oauth2.client-id}
+
+grpc:
+  server:
+    port: -1
+    in-process-name: storage-grpc-it
+  client:
+    storage-grpc-it:
+      address: in-process:storage-grpc-it
+      negotiation-type: plaintext
+
+app:
+  outbox:
+    publish-delay-ms: 3600000
+
+otel:
+  sdk:
+    disabled: true

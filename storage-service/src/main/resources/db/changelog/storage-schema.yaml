@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/create-all-tables.yaml
+
+  - changeSet:
+      id: storage-1-drop-order-tables
+      author: student
+      changes:
+        - dropTable:
+            tableName: requests
+        - dropTable:
+            tableName: orders
+
+  - changeSet:
+      id: storage-2-assembly-and-messaging
+      author: student
+      changes:
+        - createTable:
+            tableName: assembly_orders
+            columns:
+              - column: { name: id, type: UUID, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: source_order_id, type: UUID, constraints: { nullable: false } }
+              - column: { name: source_order_type, type: VARCHAR(50), constraints: { nullable: false } }
+              - column: { name: car_id, type: UUID }
+              - column: { name: model_id, type: UUID }
+              - column: { name: engine_id, type: UUID }
+              - column: { name: gearbox_id, type: UUID }
+              - column: { name: transmission_id, type: UUID }
+              - column: { name: wheel_id, type: UUID }
+              - column: { name: interior_id, type: UUID }
+              - column: { name: rudder_id, type: UUID }
+              - column: { name: warehouse_admin_id, type: UUID }
+              - column: { name: status, type: VARCHAR(50), constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+              - column: { name: removed, type: BOOLEAN, defaultValueBoolean: false, constraints: { nullable: false } }
+
+        - createTable:
+            tableName: outbox_messages
+            columns:
+              - column: { name: id, type: UUID, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: topic, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: message_key, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: payload, type: TEXT, constraints: { nullable: false } }
+              - column: { name: trace_id, type: UUID, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+              - column: { name: published_at, type: TIMESTAMP WITH TIME ZONE }
+
+        - createTable:
+            tableName: processed_events
+            columns:
+              - column: { name: event_id, type: UUID, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: processed_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }

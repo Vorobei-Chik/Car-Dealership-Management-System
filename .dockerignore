@@ -1,0 +1,10 @@
+**/.gradle
+**/build
+**/.idea
+**/.vscode
+**/*.iml
+.git
+.gitignore
+**/integrationTest
+**/test
+docker/keycloak/postgres/data

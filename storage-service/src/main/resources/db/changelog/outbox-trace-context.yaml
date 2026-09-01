@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: storage-outbox-add-trace-context
+      author: dealership
+      changes:
+        - addColumn:
+            tableName: outbox_messages
+            columns:
+              - column:
+                  name: trace_context
+                  type: TEXT

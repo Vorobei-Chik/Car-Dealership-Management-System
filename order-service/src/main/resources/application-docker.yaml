@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/dealership_orders
+  kafka:
+    bootstrap-servers: kafka:9094
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/dealership-realm
+          jwk-set-uri: http://keycloak:8080/realms/dealership-realm/protocol/openid-connect/certs
+
+keycloak:
+  auth-server-url: http://keycloak:8080
+
+swagger:
+  oauth2:
+    auth-server-url: http://localhost:8080
+
+grpc:
+  server:
+    port: -1
+  client:
+    storage-service:
+      address: static://storage-service:9090
+
+app:
+  storage-service:
+    base-url: http://storage-service:8082
+
+otel:
+  exporter:
+    otlp:
+      endpoint: http://otel-collector:4318
+      protocol: http/protobuf

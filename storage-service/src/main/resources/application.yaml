@@ -1,0 +1,94 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: storage-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dealership_storage
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: storage-service
+    producer:
+      acks: all
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/dealership-realm
+          jwk-set-uri: http://localhost:8080/realms/dealership-realm/protocol/openid-connect/certs
+
+keycloak:
+  realm: dealership-realm
+  auth-server-url: http://localhost:8080
+
+swagger:
+  oauth2:
+    client-id: dealership-swagger
+    auth-server-url: http://localhost:8080
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    oauth:
+      client-id: ${swagger.oauth2.client-id}
+      use-pkce-with-authorization-code-grant: true
+
+grpc:
+  server:
+    port: 9090
+
+app:
+  outbox:
+    publish-delay-ms: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  tracing:
+    sampling:
+      probability: 1.0
+
+otel:
+  traces:
+    exporter: otlp
+  metrics:
+    exporter: none
+  logs:
+    exporter: none
+  exporter:
+    otlp:
+      endpoint: http://localhost:4318
+      protocol: http/protobuf
+  propagators: tracecontext,baggage
+  instrumentation:
+    kafka:
+      enabled: true
+    spring-kafka:
+      enabled: true
+
+logging:
+  pattern:
+    console: "%d{ISO8601} [%thread] %-5level %logger{36} - trace_id=%X{trace_id:-} %msg%n"
+  level:
+    study.project.dealership: INFO
+    org.springframework.kafka: INFO

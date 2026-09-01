@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package study.project.dealership.grpc.inventory;
+
+option java_multiple_files = true;
+option java_package = "study.project.dealership.grpc.inventory";
+
+service CarInventoryService {
+  rpc ListAvailableCars(ListAvailableCarsRequest) returns (ListAvailableCarsResponse);
+  rpc GetAvailableCar(GetAvailableCarRequest) returns (GetAvailableCarResponse);
+}
+
+message ListAvailableCarsRequest {}
+
+message ListAvailableCarsResponse {
+  repeated Car cars = 1;
+}
+
+message GetAvailableCarRequest {
+  string car_id = 1;
+}
+
+message GetAvailableCarResponse {
+  Car car = 1;
+}
+
+message Car {
+  string id = 1;
+  Model model = 2;
+  Engine engine = 3;
+  GearBox gear_box = 4;
+  Transmission transmission = 5;
+  Wheel wheel = 6;
+  Interior interior = 7;
+  Rudder rudder = 8;
+  string color = 9;
+  string price = 10;
+  bool test_drive_available = 11;
+  bool ordered = 12;
+}
+
+message Model {
+  string id = 1;
+  string brand = 2;
+  string body_type = 3;
+  string price = 4;
+}
+
+message Engine {
+  string id = 1;
+  string fuel_type = 2;
+  string power = 3;
+  string capacity = 4;
+  string price = 5;
+  int32 quantity = 6;
+}
+
+message GearBox {
+  string id = 1;
+  string type = 2;
+  string price = 3;
+  int32 quantity = 4;
+}
+
+message Transmission {
+  string id = 1;
+  string drive_type = 2;
+  string price = 3;
+  int32 quantity = 4;
+}
+
+message Wheel {
+  string id = 1;
+  string price = 2;
+  int32 quantity = 3;
+}
+
+message Interior {
+  string id = 1;
+  string price = 2;
+  int32 quantity = 3;
+}
+
+message Rudder {
+  string id = 1;
+  string price = 2;
+  int32 quantity = 3;
+}
